@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vortex Project</title>
+    <link rel="stylesheet" href="styles.css"?v=17ac4e75>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GFT0YCFV9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0GFT0YCFV9');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/profanity-cleaner@0.0.3/dist/profanity-cleaner.min.js"></script>
+    <script src="lib/three.min.js"?v=17ac4e75></script>
+    <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js"></script>
+    <script src="lib/FBXLoader.js"?v=17ac4e75></script>
+</head>
+<body>
+    <div id="scene"></div>
+    <div id="crosshair"></div>
+    <div id="cursor"></div>
+    <div id="overlay"><span>Click to play</span></div>
+
+    <div id="lb-player-panel" style="display:none">
+        <div class="lbp-name" id="lbp-name"></div>
+        <button class="lbp-btn" id="lbp-action-btn"></button>
+        <button class="lbp-btn" id="lbp-follow-btn"></button>
+        <a class="lbp-profile" id="lbp-profile-link" href="#" target="_blank">View Profile →</a>
+    </div>
+
+    <div id="settings-panel" style="display:none">
+        <div class="sp-title">Settings</div>
+        <div class="sp-row">
+            <span class="sp-label">Camera Sensitivity</span>
+            <input type="range" id="sp-sens" min="0.25" max="3" step="0.05" value="1">
+            <span class="sp-val" id="sp-sens-val">1.0x</span>
+        </div>
+    </div>
+
+    <div id="leaderboard">
+        <div class="lb-panel">
+            <div class="lb-header">
+                <span class="lb-title">Players</span>
+                <div class="lb-col-headers" id="lb-col-headers"></div>
+            </div>
+            <div class="lb-body" id="lb-body"></div>
+        </div>
+    </div>
+
+    <div id="hud">
+        <div id="hud-topbar">
+            <button class="hud-btn" id="settings-btn" title="Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="hud-btn" id="chat-toggle-btn" title="Chat">
+                <i class="fa-solid fa-message"></i>
+                <span id="unread-badge" class="hidden">0</span>
+            </button>
+        </div>
+        <div id="chat-window">
+            <div id="chat-messages"></div>
+            <div id="chat-input-row">
+                <div id="chat-input" tabindex="-1"><span class="chat-placeholder">Click or press / to chat</span></div>
+                <button id="chat-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notif-container"></div>
+
+    <script src="js/vortex-engine.js"?v=17ac4e75></script>
+    <script>
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            const p = document.getElementById('settings-panel');
+            p.style.display = p.style.display === 'none' ? '' : 'none';
+        });
+
+        const sensSlider = document.getElementById('sp-sens');
+        const sensVal    = document.getElementById('sp-sens-val');
+
+        const savedSens = parseFloat(localStorage.getItem('vortex_sens') || '1');
+        sensSlider.value = savedSens;
+        sensVal.textContent = savedSens.toFixed(2) + 'x';
+        window._vortex?.setSens(savedSens);
+
+        sensSlider.addEventListener('input', function () {
+            const v = parseFloat(this.value);
+            sensVal.textContent = v.toFixed(2) + 'x';
+            window._vortex?.setSens(v);
+            localStorage.setItem('vortex_sens', v);
+        });
+    </script>
+    <script src="js/parts.js"?v=17ac4e75></script>
+    <script src="js/leaderboard.js"?v=17ac4e75></script>
+    <script>window.GAME_ID = 1;</script>
+    <script src="js/multiplayer.js"?v=17ac4e75></script>
+    <script src="js/chat.js"?v=17ac4e75></script>
+    <script src="js/notifications.js"?v=17ac4e75></script>
+</body>
+</html>
